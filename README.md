@@ -1,1 +1,1 @@
-# migration-planner-mcp
+# oma-service-mcp
