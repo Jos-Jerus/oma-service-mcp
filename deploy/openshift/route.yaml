@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: oma-service-mcp
+  labels:
+    app: oma-service-mcp
+spec:
+  to:
+    kind: Service
+    name: oma-service-mcp
+    weight: 100
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

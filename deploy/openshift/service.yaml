@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oma-service-mcp
+  labels:
+    app: oma-service-mcp
+spec:
+  selector:
+    app: oma-service-mcp
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+  type: ClusterIP

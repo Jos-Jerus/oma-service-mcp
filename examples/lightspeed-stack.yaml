@@ -1,0 +1,44 @@
+# Example lightspeed-stack.yaml snippet showing how to register
+# the OMA Service MCP server with lightspeed-stack.
+#
+# Add this to your lightspeed-stack.yaml under the mcp_servers section.
+# The server must be running and accessible at the configured URL.
+#
+# Authentication flow:
+#   OMA service MCP must be configured with AUTH_TYPE=forwarded.
+#   lightspeed-stack resolves the Authorization header per the
+#   authorization_headers config and sends it to this MCP server.
+#
+# MCP-HEADERS mechanism:
+#   When authorization_headers.Authorization is set to "client",
+#   clients must send an MCP-HEADERS HTTP header with a JSON dict:
+#     MCP-HEADERS: {"oma-service": {"Authorization": "Bearer <token>"}}
+#   lightspeed-stack extracts and forwards these headers to the
+#   corresponding MCP server.
+
+mcp_servers:
+  # No auth (local dev, migration-planner running without auth)
+  # OMA service MCP should be configured with AUTH_TYPE=none.
+  - name: "oma-service"
+    url: "http://oma-service-mcp:8000/mcp"
+
+  # With auth forwarded from a secret file
+  # lightspeed-stack reads the token file and sends it as Authorization header.
+  # - name: "oma-service"
+  #   url: "http://oma-service-mcp:8000/mcp"
+  #   authorization_headers:
+  #     Authorization: "/var/secrets/migration-planner-token"
+
+  # With kubernetes token forwarding
+  # lightspeed-stack forwards the authenticated user's k8s token.
+  # - name: "oma-service"
+  #   url: "http://oma-service-mcp:8000/mcp"
+  #   authorization_headers:
+  #     Authorization: "kubernetes"
+
+  # With client-provided token (via MCP-HEADERS)
+  # Clients send their own token via the MCP-HEADERS HTTP header.
+  # - name: "oma-service"
+  #   url: "http://oma-service-mcp:8000/mcp"
+  #   authorization_headers:
+  #     Authorization: "client"

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oma-service-mcp-config
+  labels:
+    app: oma-service-mcp
+data:
+  migration-planner-url: "http://migration-planner:7443"
+  auth-type: "forwarded"
