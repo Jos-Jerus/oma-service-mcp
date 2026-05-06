@@ -55,6 +55,8 @@ class OMAServiceMCPServer:
         self.mcp.tool()(self._wrap_tool(assessment_tools.list_assessments))
         self.mcp.tool()(self._wrap_tool(assessment_tools.get_assessment))
         self.mcp.tool()(self._wrap_tool(assessment_tools.calculate_cluster_requirements))
+        self.mcp.tool()(self._wrap_tool(assessment_tools.calculate_migration_estimation))
+        self.mcp.tool()(self._wrap_tool(assessment_tools.calculate_migration_complexity))
 
     def _wrap_tool(
         self, tool_func: Callable[..., Awaitable[Any]]

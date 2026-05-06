@@ -169,3 +169,71 @@ class MigrationPlannerClient:
                 assessment_id,
             )
             return result
+
+    @sanitize_exceptions
+    async def calculate_migration_estimation(
+        self,
+        assessment_id: str,
+        cluster_id: str,
+    ) -> dict[str, Any]:
+        """Calculate migration time estimation for a cluster.
+
+        Args:
+            assessment_id: The UUID of the assessment.
+            cluster_id: The ID of the cluster to estimate migration time for.
+
+        Returns:
+            dict: Migration estimation with total duration and breakdown by phase.
+        """
+        log.info(
+            "Calculating migration estimation for assessment %s, cluster %s",
+            assessment_id,
+            cluster_id,
+        )
+        request_body = {"clusterId": cluster_id}
+        async with self._get_client() as client:
+            response = await client.post(
+                f"/api/v1/assessments/{assessment_id}/migration-estimation",
+                json=request_body,
+            )
+            response.raise_for_status()
+            result = response.json()
+            log.info(
+                "Successfully calculated migration estimation for assessment %s",
+                assessment_id,
+            )
+            return result
+
+    @sanitize_exceptions
+    async def calculate_migration_complexity(
+        self,
+        assessment_id: str,
+        cluster_id: str,
+    ) -> dict[str, Any]:
+        """Calculate migration complexity estimation for a cluster.
+
+        Args:
+            assessment_id: The UUID of the assessment.
+            cluster_id: The ID of the cluster to analyze complexity for.
+
+        Returns:
+            dict: Migration complexity with breakdown by disk size and OS type.
+        """
+        log.info(
+            "Calculating migration complexity for assessment %s, cluster %s",
+            assessment_id,
+            cluster_id,
+        )
+        request_body = {"clusterId": cluster_id}
+        async with self._get_client() as client:
+            response = await client.post(
+                f"/api/v1/assessments/{assessment_id}/complexity-estimation",
+                json=request_body,
+            )
+            response.raise_for_status()
+            result = response.json()
+            log.info(
+                "Successfully calculated migration complexity for assessment %s",
+                assessment_id,
+            )
+            return result

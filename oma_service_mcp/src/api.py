@@ -8,7 +8,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 
-from oma_service_mcp.src.mcp import OMAServiceMCPServer
+from oma_service_mcp.src.mcp_server import OMAServiceMCPServer
 from oma_service_mcp.src.settings import settings
 from oma_service_mcp.src.logger import log, configure_logging
 

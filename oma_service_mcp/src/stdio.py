@@ -5,7 +5,7 @@ over stdin/stdout instead of running as a standalone HTTP/SSE server.
 """
 
 from oma_service_mcp.src.logger import configure_logging
-from oma_service_mcp.src.mcp import OMAServiceMCPServer
+from oma_service_mcp.src.mcp_server import OMAServiceMCPServer
 
 # Configure logging to file/stderr only (stdout is reserved for MCP protocol)
 configure_logging()

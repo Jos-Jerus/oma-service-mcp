@@ -167,3 +167,79 @@ async def calculate_cluster_requirements(
 
     log.info("Successfully calculated cluster requirements for assessment %s", assessment_id)
     return json.dumps(result, indent=2, default=str)
+
+
+async def calculate_migration_estimation(
+    get_access_token_func: Callable[[], str | None],
+    assessment_id: Annotated[
+        str,
+        Field(description="The UUID of the assessment."),
+    ],
+    cluster_id: Annotated[
+        str,
+        Field(description="The ID of the cluster within the assessment."),
+    ],
+) -> str:
+    """Calculate estimated migration duration for a cluster.
+
+    Returns total duration and breakdown by phase (e.g., Storage Migration, Post-Migration Checks).
+
+    Prerequisites:
+        - Valid assessment UUID (from list_assessments)
+        - Valid cluster ID within that assessment's inventory
+
+    Returns:
+        str: A formatted string containing migration time estimation with phase breakdown.
+    """
+    log.info(
+        "Calculating migration estimation: assessment=%s, cluster=%s",
+        assessment_id,
+        cluster_id,
+    )
+
+    client = MigrationPlannerClient(get_access_token_func())
+    result = await client.calculate_migration_estimation(
+        assessment_id=assessment_id,
+        cluster_id=cluster_id,
+    )
+
+    log.info("Successfully calculated migration estimation for assessment %s", assessment_id)
+    return json.dumps(result, indent=2, default=str)
+
+
+async def calculate_migration_complexity(
+    get_access_token_func: Callable[[], str | None],
+    assessment_id: Annotated[
+        str,
+        Field(description="The UUID of the assessment."),
+    ],
+    cluster_id: Annotated[
+        str,
+        Field(description="The ID of the cluster within the assessment."),
+    ],
+) -> str:
+    """Calculate migration complexity scores for a cluster.
+
+    Returns complexity breakdown by disk size and OS type, with ratings for each category.
+
+    Prerequisites:
+        - Valid assessment UUID (from list_assessments)
+        - Valid cluster ID within that assessment's inventory
+
+    Returns:
+        str: A formatted string containing complexity analysis by disk size and OS type.
+    """
+    log.info(
+        "Calculating migration complexity: assessment=%s, cluster=%s",
+        assessment_id,
+        cluster_id,
+    )
+
+    client = MigrationPlannerClient(get_access_token_func())
+    result = await client.calculate_migration_complexity(
+        assessment_id=assessment_id,
+        cluster_id=cluster_id,
+    )
+
+    log.info("Successfully calculated migration complexity for assessment %s", assessment_id)
+    return json.dumps(result, indent=2, default=str)
