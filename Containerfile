@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/python-312:latest
+FROM registry.access.redhat.com/ubi9/python-312:9.6
 
 ENV APP_HOME=/opt/app-root/src
 WORKDIR ${APP_HOME}
@@ -35,4 +35,4 @@ LABEL com.redhat.component="oma-service-mcp" \
       version="latest" \
       vendor="Red Hat, Inc."
 
-CMD ["sh", "-c", "cd /opt/app-root/src && PYTHONPATH=/opt/app-root/src .venv/bin/python oma_service_mcp/src/main.py"]
+CMD ["uv", "--cache-dir", "/tmp/uv-cache", "run", "python", "-m", "oma_service_mcp.src.main"]
