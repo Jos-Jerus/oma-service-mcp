@@ -12,7 +12,7 @@ from oma_service_mcp.utils.auth import get_access_token
 from oma_service_mcp.src.settings import settings
 
 # Import tool modules
-from oma_service_mcp.src.tools import source_tools, assessment_tools
+from oma_service_mcp.src.tools import source_tools, assessment_tools, estimation_tools, system_tools
 
 
 class OMAServiceMCPServer:
@@ -46,6 +46,8 @@ class OMAServiceMCPServer:
         Tools are organized by functional area:
         - Source management tools (list, get)
         - Assessment management tools (list, get, cluster requirements)
+        - Estimation tools (complexity, migration time, migration time by complexity)
+        - System tools (info)
         """
         # Source tools
         self.mcp.tool()(self._wrap_tool(source_tools.list_sources))
@@ -55,6 +57,14 @@ class OMAServiceMCPServer:
         self.mcp.tool()(self._wrap_tool(assessment_tools.list_assessments))
         self.mcp.tool()(self._wrap_tool(assessment_tools.get_assessment))
         self.mcp.tool()(self._wrap_tool(assessment_tools.calculate_cluster_requirements))
+
+        # Estimation tools
+        self.mcp.tool()(self._wrap_tool(estimation_tools.get_complexity_estimation))
+        self.mcp.tool()(self._wrap_tool(estimation_tools.get_migration_estimation))
+        self.mcp.tool()(self._wrap_tool(estimation_tools.get_migration_estimation_by_complexity))
+
+        # System tools
+        self.mcp.tool()(self._wrap_tool(system_tools.get_system_info))
 
     def _wrap_tool(
         self, tool_func: Callable[..., Awaitable[Any]]
